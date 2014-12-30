@@ -1,0 +1,30 @@
+func client() {
+    // Setup tunnel connection
+    // start listening
+    // wait for interrupt
+}
+
+func tcpIn() {
+    // listen for tcp
+    // get correct fromTunnel channel from map using clientAddress
+    // send to right fromTunnel channel
+    // repeat
+}
+
+func udpIn() {
+    // listen for UDP
+    // send to toTunnel channel
+    // repeat
+}
+
+func tcpOut() {
+    // listen to toTunnel channel
+	// send over tunnel
+	// repeat
+}
+
+func udpOut() {
+    // listen to individual fromTunnel channel
+    // send to host
+    // repeat
+}

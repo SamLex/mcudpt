@@ -1,0 +1,34 @@
+func server() {
+	// setup udp socket
+	// setup tcp socket
+	// accept client connection
+	// close tcp socket
+	// start listening
+	// wait for interrupt
+}
+
+func udpIn() {
+	// listen for UDP
+	// Add to known hosts
+	// send to toTunnel channel
+	// repeat
+}
+
+func tcpIn() {
+	// listen for tcp
+	// Check host is known
+	// send to fromTunnel channel
+	// repeat
+}
+
+func udpOut() {
+	// listen to fromTunnel channel
+	// send to client
+	// repeat
+}
+
+func tcpOut() {
+	// listen to toTunnel channel
+	// send over tunnel
+	// repeat
+}
