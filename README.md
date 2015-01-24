@@ -10,11 +10,9 @@ Note: this mimicing does not include encryption: the UDP packets are tunnled ove
 Install
 -------
 
-This requires the Go (go-lang) dev tools (go build command)
+This requires the Go (go-lang) dev tools and a properly setup go workspace (http://golang.org/doc/code.html)
 
-Clone this repostitory
-Execute 'go build mcudpt'
-Executable is created as 'mcudpt'
+Just execute 'go get github.com/SamLex/mcudpt'. This will create a mcudpt binary in your workspaces bin directory
 
 Usage
 -----
