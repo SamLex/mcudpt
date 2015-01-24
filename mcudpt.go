@@ -27,58 +27,42 @@ CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
-// mcudpt
 package main
 
 import (
 	"flag"
+	"fmt"
+	"github.com/SamLex/mcudpt/receiver"
+	"github.com/SamLex/mcudpt/sender"
 	"log"
-	"net"
-	"runtime"
+	"os"
 )
 
-const TUNNEL_PACKET_QUEUE_SIZE uint = 64
+// Flags
+var mode *string = flag.String("mode", "receiver", "the run mode: receiver or sender")
+var tcp *string = flag.String("tcp", ":1937", "the TCP address listen for a sender connection or connect to a receiver")
+var udp *string = flag.String("udp", ":1937", "the UDP address to listen for packets to forward or where to send forwarded packets")
 
 func main() {
-	// Allow usage of multiple OS threads
-	runtime.GOMAXPROCS(runtime.NumCPU())
-
-	// Flags
-	modeFlag := flag.String("mode", "server", "the run mode: client or server")
-	tcpFlag := flag.String("tcp", ":1937", "the TCP address to listen on or connect to")
-	udpFlag := flag.String("udp", ":1937", "the UDP address to listen on or send tunneled packets to")
+	// Use custom usage message
+	flag.Usage = printUsage
 
 	// Parse flags
 	flag.Parse()
 
-	// Resolve address flags
-	tcpAddress, err := net.ResolveTCPAddr("tcp", *tcpFlag)
-	if err != nil {
-		log.Printf("Cannot resolve TCP address %s: %s \n", *tcpFlag, err)
-		return
-	}
-
-	udpAddress, err := net.ResolveUDPAddr("udp", *udpFlag)
-	if err != nil {
-		log.Printf("Cannot resolve UCP address %s: %s \n", *udpFlag, err)
-		return
-	}
-
-	switch *modeFlag {
-	case "server":
-		server(tcpAddress, udpAddress)
-	case "client":
-		client(tcpAddress, udpAddress)
+	// Branch on mode
+	switch *mode {
+	case "receiver":
+		receiver.Init(*tcp, *udp)
+	case "sender":
+		sender.Init(*tcp, *udp)
 	default:
-		log.Printf("Unknown mode %s \n", *modeFlag)
+		log.Printf("Unknown mode %s \n", *mode)
 	}
 }
 
-func fatalErr(err error, errorMessage string) {
-	if errorMessage == "" {
-		log.Fatalln(err)
-	} else {
-		log.Fatalf("%s : %s", errorMessage, err)
-	}
+// Print custom usage
+func printUsage() {
+	fmt.Fprintf(os.Stderr, "Usage of mcudpt:\n")
+	flag.PrintDefaults()
 }
